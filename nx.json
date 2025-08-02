@@ -15,14 +15,12 @@
     ],
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
-  "nxCloudId": "688dc0c043b7641e2e5b95c4",
+  "nxCloudId": "688dc691a496466245c815d0",
   "plugins": [
     {
       "plugin": "@nx/js/typescript",
       "options": {
-        "typecheck": {
-          "targetName": "typecheck"
-        },
+        "typecheck": { "targetName": "typecheck" },
         "build": {
           "targetName": "build",
           "configName": "tsconfig.lib.json",
@@ -31,17 +29,10 @@
         }
       }
     },
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    },
+    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } },
     {
       "plugin": "@nx/jest/plugin",
-      "options": {
-        "targetName": "test"
-      },
+      "options": { "targetName": "test" },
       "exclude": ["apps/auth-service-e2e/**/*"]
     }
   ],
@@ -51,8 +42,6 @@
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     },
-    "test": {
-      "dependsOn": ["^build"]
-    }
+    "test": { "dependsOn": ["^build"] }
   }
 }
