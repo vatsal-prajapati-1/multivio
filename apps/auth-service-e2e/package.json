@@ -1,0 +1,26 @@
+{
+  "name": "@multivio/auth-service-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": [
+      "@multivio/auth-service"
+    ],
+    "targets": {
+      "e2e": {
+        "executor": "@nx/jest:jest",
+        "outputs": [
+          "{projectRoot}/test-output/jest/coverage"
+        ],
+        "options": {
+          "jestConfig": "apps/auth-service-e2e/jest.config.ts",
+          "passWithNoTests": true
+        },
+        "dependsOn": [
+          "@multivio/auth-service:build",
+          "@multivio/auth-service:serve"
+        ]
+      }
+    }
+  }
+}
