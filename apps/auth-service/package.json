@@ -74,5 +74,8 @@
         "command": "docker build -f apps/auth-service/Dockerfile . -t multivio-auth-service"
       }
     }
+  },
+  "devDependencies": {
+    "@types/swagger-ui-express": "^4.1.8"
   }
 }
