@@ -87,6 +87,8 @@ export const loginUser = async (
   try {
     const { email, password } = req.body;
 
+    console.log(email, password, "fsdfsfsffsdfsfsf")
+
     if (!email || !password) {
       return next(new ValidationError('Email and Password are required!'));
     }
@@ -133,6 +135,10 @@ export const loginUser = async (
     return next(error);
   }
 };
+
+// refresh token user
+
+
 
 // user forgot password
 export const userForgotPassword = async (

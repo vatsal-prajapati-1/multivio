@@ -106,7 +106,11 @@ const Signup = () => {
     }
   };
 
-  const resendOTP = () => {};
+  const resendOTP = () => {
+    if (userData) {
+      signupMutation.mutate(userData);
+    }
+  };
 
   return (
     <div className="w-full py-10 min-h-[85vh] bg-[#f1f1f1]">
@@ -237,18 +241,19 @@ const Signup = () => {
               >
                 {verifyOtpMutation.isPending ? ' Verfying ... ' : 'Verify OTP'}
               </button>
-              <p className="text-center text-sm mt-4">
-                {canResend ? (
-                  <button
-                    onClick={resendOTP}
-                    className="text-blue-500 cursor-pointer"
-                  >
-                    Resend OTP
-                  </button>
-                ) : (
-                  `Resend OTP in ${timer}s`
-                )}
-              </p>
+
+              {canResend ? (
+                <button
+                  onClick={resendOTP}
+                  className="text-blue-500 text-center mt-4 cursor-pointer"
+                >
+                  Resend OTP
+                </button>
+              ) : (
+                <p className="text-center text-sm mt-4">
+                  Resend OTP in {timer}s
+                </p>
+              )}
               {verifyOtpMutation?.isError &&
                 verifyOtpMutation.error instanceof AxiosError && (
                   <p className="text-red-500 text-sm mt-2">
