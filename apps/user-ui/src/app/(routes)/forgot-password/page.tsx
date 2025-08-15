@@ -50,14 +50,10 @@ const ForgotPassword = () => {
 
   const requestOtpMutation = useMutation({
     mutationFn: async ({ email }: { email: string }) => {
-      console.log('this is request otp mutation email', email);
-
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_SERVER_URI}/api/forgot-password-user`,
         { email }
       );
-
-      console.log('this is request otp mutation response', response);
 
       return response.data;
     },
@@ -84,7 +80,6 @@ const ForgotPassword = () => {
         { email: userEmail, otp: otp.join('') }
       );
 
-      console.log('verify otp mutation', response);
       return response.data;
     },
     onSuccess: () => {
@@ -104,11 +99,15 @@ const ForgotPassword = () => {
 
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_SERVER_URI}/api/reset-password-user`,
-        { userEmail, password }
+        {
+          email: userEmail,
+          newPassword: password,
+        }
       );
 
       return response.data;
     },
+
     onSuccess: () => {
       setStep('email');
       toast.success(
@@ -117,6 +116,7 @@ const ForgotPassword = () => {
       setServerError(null);
       router.push('/login');
     },
+
     onError: (error: AxiosError) => {
       const errorMessage = (error.response?.data as { message?: string })
         ?.message;

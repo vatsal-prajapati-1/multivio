@@ -87,8 +87,6 @@ export const loginUser = async (
   try {
     const { email, password } = req.body;
 
-    console.log(email, password, "fsdfsfsffsdfsfsf")
-
     if (!email || !password) {
       return next(new ValidationError('Email and Password are required!'));
     }
@@ -138,8 +136,6 @@ export const loginUser = async (
 
 // refresh token user
 
-
-
 // user forgot password
 export const userForgotPassword = async (
   req: Request,
@@ -166,9 +162,9 @@ export const resetUserPassword = async (
   next: NextFunction
 ) => {
   try {
-    const { email, newPassowrd } = req.body;
+    const { email, newPassword } = req.body;
 
-    if (!email || !newPassowrd) {
+    if (!email || !newPassword) {
       return next(new ValidationError('Email and new password are required!'));
     }
 
@@ -178,7 +174,7 @@ export const resetUserPassword = async (
 
     // compare new password with the existing one
 
-    const isSamePassword = await bcrypt.compare(newPassowrd, user.password!);
+    const isSamePassword = await bcrypt.compare(newPassword, user.password!);
 
     if (isSamePassword) {
       return next(
@@ -190,7 +186,7 @@ export const resetUserPassword = async (
 
     // hash the new password
 
-    const hashedPassword = await bcrypt.hash(newPassowrd, 10);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     await prisma.users.update({
       where: { email },

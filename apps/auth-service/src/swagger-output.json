@@ -6,10 +6,8 @@
     "version": "1.0.0"
   },
   "host": "localhost:6001",
-  "basePath": "/",
-  "schemes": [
-    "http"
-  ],
+  "basePath": "/api",
+  "schemes": ["http"],
   "paths": {
     "/user-registration": {
       "post": {
@@ -163,7 +161,5 @@
       }
     }
   },
-  "schemas": [
-    "http"
-  ]
+  "schemas": ["http"]
 }
