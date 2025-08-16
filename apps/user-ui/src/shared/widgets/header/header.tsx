@@ -1,10 +1,14 @@
+'use client';
 import Link from 'next/link';
 import { Search } from 'lucide-react';
 import ProfileIcon from '../../../assets/svgs/profile-icon';
 import HeartIcon from '../../../assets/svgs/heart-icon';
 import HeaderBottom from './header-bottom';
+import useUser from 'apps/user-ui/src/hooks/useUser';
 
 const Header = () => {
+  const { user, isLoading } = useUser();
+
   return (
     <div className="w-full bg-white">
       <div className="w-[80%] py-5 m-auto flex items-center justify-between">
@@ -25,16 +29,37 @@ const Header = () => {
         </div>
         <div className="flex items-center gap-8">
           <div className="flex items-center gap-2">
-            <Link
-              href={'/login'}
-              className="border-2 w-[50px] h-[50px] flex items-center justify-center rounded-full border-[#010f1c1a]"
-            >
-              <ProfileIcon />
-            </Link>
-            <Link href={'/login'}>
-              <span className="block font-[500] opacity-[.6]">Hello,</span>
-              <span className="font-[600]">Sigin In</span>
-            </Link>
+            {isLoading && user ? (
+              <>
+                <Link
+                  href={'/profile'}
+                  className="border-2 w-[50px] h-[50px] flex items-center justify-center rounded-full border-[#010f1c1a]"
+                >
+                  <ProfileIcon />
+                </Link>
+                <Link href={'/profile'}>
+                  <span className="block font-[500] opacity-[.6]">Hello,</span>
+                  <span className="font-[600]">
+                    {user?.name?.split(' ')[0]}
+                  </span>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href={'/login'}
+                  className="border-2 w-[50px] h-[50px] flex items-center justify-center rounded-full border-[#010f1c1a]"
+                >
+                  <ProfileIcon />
+                </Link>
+                <Link href={'/login'}>
+                  <span className="block font-[500] opacity-[.6]">Hello,</span>
+                  <span className="font-[600]">
+                    {isLoading ? ' ... ' : 'Sign In'}
+                  </span>
+                </Link>
+              </>
+            )}
           </div>
           <div className="flex items-center gap-5">
             <Link href={'/wishlist'} className="relative">
