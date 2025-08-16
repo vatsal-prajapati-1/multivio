@@ -29,7 +29,7 @@ const Header = () => {
         </div>
         <div className="flex items-center gap-8">
           <div className="flex items-center gap-2">
-            {isLoading && user ? (
+            {!isLoading && user ? (
               <>
                 <Link
                   href={'/profile'}
