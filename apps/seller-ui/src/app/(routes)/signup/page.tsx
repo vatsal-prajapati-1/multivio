@@ -131,7 +131,7 @@ const Signup = () => {
     <div className="w-full flex flex-col items-center pt-10 min-h-screen">
       {/* Stepper */}
       <div className="relative flex items-center justify-between md:w-[50%] mb-8">
-        <div className="absolute top-[25%] left-5 w-[80%] md:w-[90%] h-1 bg-gray-300 -z-10" />
+        <div className="absolute top-[25%] left-0 w-[80%] md:w-[90%] h-1 bg-gray-300 -z-10" />
         {[1, 2, 3].map((step) => (
           <div key={step}>
             <div
