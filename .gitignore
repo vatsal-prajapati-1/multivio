@@ -52,3 +52,6 @@ test-output
 # Next.js
 .next
 out
+
+# swagger output json file
+/apps/auth-service/src/swagger-output.json
