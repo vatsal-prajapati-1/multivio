@@ -1,12 +1,14 @@
 'use client';
+import { useQuery } from '@tanstack/react-query';
 import ImagePlaceHolder from 'apps/seller-ui/src/shared/components/image-placeholder';
+import axiosInstance from 'apps/seller-ui/src/utils/axiosInstance';
 import { ChevronRight } from 'lucide-react';
 import ColorSelector from 'packages/components/color-selector';
 import CustomProperties from 'packages/components/custom-properties';
 import CustomSpecifications from 'packages/components/custom-specifications';
 import Input from 'packages/components/input';
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 const Page = () => {
   const {
@@ -17,6 +19,30 @@ const Page = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      try {
+        const response = await axiosInstance.get('/product/api/get-categories');
+        return response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    retry: 2,
+  });
+
+  const categories = data?.categories || [];
+
+  const subCategories = data?.subCategories || [];
+
+  const selectedCategory = watch('category');
+
+  const regular_price = watch('regular_price');
+
+  console.log(categories, subCategories, 'SDfsffsf');
 
   const [openImageModel, setOpenImageModel] = useState(false);
 
@@ -244,7 +270,7 @@ const Page = () => {
                     required: 'Cash on Delivery is required',
                   })}
                   defaultValue="yes"
-                  className="w-full border outline-none border-gray-700 bg-transparent"
+                  className="w-full border outline-none border-gray-700 bg-transparent p-2 rounded-md text-white"
                 >
                   <option value="yes" className="bg-black">
                     Yes
@@ -266,6 +292,38 @@ const Page = () => {
               <label className="block font-semibold text-gray-300 mb-1">
                 Category
               </label>
+
+              {isLoading ? (
+                <p className="text-gray-400">Loading categories ...</p>
+              ) : isError ? (
+                <p className="text-red-500">Failed to load categories</p>
+              ) : (
+                <Controller
+                  name="category"
+                  control={control}
+                  rules={{ required: 'Category is required' }}
+                  render={({ field }) => (
+                    <select
+                      {...field}
+                      className="w-full border outline-none border-gray-700 bg-transparent p-2 rounded-md text-white"
+                    >
+                      <option value="" className="bg-black">
+                        Select Category
+                      </option>
+
+                      {categories?.map((category: string) => (
+                        <option
+                          value={category}
+                          key={category}
+                          className="bg-black"
+                        >
+                          {category}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                />
+              )}
             </div>
           </div>
         </div>
