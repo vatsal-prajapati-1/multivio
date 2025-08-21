@@ -66,7 +66,7 @@ const ColorSelector = ({ control, errors }: any) => {
             {showColorPicker && (
               <div className="relative flex items-center gap-2">
                 <input
-                  type="text"
+                  type="color"
                   value={newColor}
                   onChange={(e) => setNewColor(e.target.value)}
                   className="w-10 h-10 p-0 border-none cursor-pointer"

@@ -47,7 +47,7 @@ const ImagePlaceHolder = ({
           <button
             type="button"
             onClick={() => onRemove?.(index!)}
-            className="abosolute top-3 right-3 p-2 !rounded bg-red-600 shadow-lg"
+            className="absolute top-3 right-3 p-2 !rounded bg-red-600 shadow-lg"
           >
             <X size={16} />
           </button>

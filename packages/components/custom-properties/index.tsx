@@ -55,7 +55,7 @@ const CustomProperties = ({ control, errors }: any) => {
                       key={index}
                       className="border border-gray-700 p-3 rounded-lg bg-gray-900"
                     >
-                      <div className="flex items-center justify-center">
+                      <div className="flex items-center justify-between">
                         <span className="text-white font-medium">
                           {property.label}
                         </span>
@@ -67,7 +67,7 @@ const CustomProperties = ({ control, errors }: any) => {
                         </button>
                       </div>
 
-                      {/* Add values to Property */}
+                      {/* Add Values to Property */}
 
                       <div className="flex items-center mt-2 gap-2">
                         <input
@@ -107,7 +107,7 @@ const CustomProperties = ({ control, errors }: any) => {
                   <div className="flex items-center gap-2 mt-1">
                     <Input
                       placeholder="Enter property label (e.g., Material, Warranty)"
-                      value={newValue}
+                      value={newLabel}
                       onChange={(e: any) => setNewLabel(e.target.value)}
                     />
 

@@ -16,12 +16,12 @@ const CustomSpecifications = ({ control, errors }: any) => {
 
       <div className="flex flex-col gap-3">
         {fields?.map((item, index) => (
-          <div key={index} className="flex gap-2 items-center">
+          <div key={item.id} className="flex gap-2 items-center">
             <Controller
               name={`custom_specifications.${index}.name`}
               control={control}
               rules={{ required: 'Specification name is required' }}
-              render={(field) => (
+              render={({ field }) => (
                 <Input
                   label="Specification Name"
                   placeholder="e.g., Battery Life, Weight, Material"

@@ -8,7 +8,7 @@ import Input from 'packages/components/input';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-const page = () => {
+const Page = () => {
   const {
     register,
     control,
@@ -50,7 +50,7 @@ const page = () => {
       if (index === -1) {
         updatedImages[0] = null;
       } else {
-        updatedImages.slice(index, 1);
+        updatedImages.splice(index, 1);
       }
       if (!updatedImages.includes(null) && updatedImages.length < 8) {
         updatedImages.push(null);
@@ -191,7 +191,7 @@ const page = () => {
                     pattern: {
                       value: /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
                       message:
-                        'Invalid slug format! Use only lowercase letters, numbers, and ',
+                        'Invalid slug format! Use only lowercase letters, numbers, and dashes (e.g., product-slug).',
                     },
                     minLength: {
                       value: 3,
@@ -241,4 +241,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

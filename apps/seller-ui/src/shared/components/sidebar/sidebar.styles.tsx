@@ -4,7 +4,7 @@ import styled from 'styled-components';
 // SidebarWrapper component
 
 export const SidebarWrapper = styled.div`
-  background-color: var(--background); // Update your CSS variables as needed
+  background-color: var(--background); /* Update your CSS variables as needed */
   transition: transform 0.2s ease;
   height: 100%;
   position: fixed;
@@ -13,9 +13,9 @@ export const SidebarWrapper = styled.div`
   flex-shrink: 0;
   z-index: 202;
   overflow-y: auto;
-  border-right: 1px solid var(--border); // Update your CSS variable as needed
+  border-right: 1px solid var(--border); /* Update your CSS variable as needed */
   flex-direction: column;
-  padding-top: var(--space-10); // Convert design tokens to CSS variables
+  padding-top: var(--space-10); /* Convert design tokens to CSS variables */
   padding-bottom: var(--space-10);
   padding-left: var(--space-6);
   padding-right: var(--space-6);
