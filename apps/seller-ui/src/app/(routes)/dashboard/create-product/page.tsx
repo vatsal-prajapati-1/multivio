@@ -8,6 +8,7 @@ import CustomProperties from 'packages/components/custom-properties';
 import CustomSpecifications from 'packages/components/custom-specifications';
 import Input from 'packages/components/input';
 import RichTextEditor from 'packages/components/rich-text-editor';
+import SizeSelector from 'packages/components/size-selector';
 import React, { useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -89,6 +90,8 @@ const Page = () => {
 
     setValue('images', images);
   };
+
+  const handleSaveDraft = () => {};
 
   return (
     <form
@@ -494,9 +497,38 @@ const Page = () => {
                   </p>
                 )}
               </div>
+
+              <div className="mt-2">
+                <SizeSelector control={control} errors={errors} />
+              </div>
+
+              <div className="mt-3">
+                <label className="block font-semibold text-gray-300 mb-1">
+                  Select Discount Codes (optional)
+                </label>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+      <div className="mt-6 flex justify-end gap-3">
+        {isChanged && (
+          <button
+            type="button"
+            onClick={handleSaveDraft}
+            className="px-4 py-2 bg-gray-700 text-white rounded-md"
+          >
+            Save Draft
+          </button>
+        )}
+
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md"
+          disabled={loading}
+        >
+          {loading ? 'Creating ... ' : 'Create'}
+        </button>
       </div>
     </form>
   );

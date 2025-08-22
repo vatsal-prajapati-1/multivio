@@ -6,8 +6,10 @@
     "version": "1.0.0"
   },
   "host": "localhost:6002",
-  "basePath": "/product/api",
-  "schemes": ["http"],
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
   "paths": {
     "/get-categories": {
       "get": {
@@ -23,5 +25,7 @@
       }
     }
   },
-  "schemas": ["http"]
+  "schemas": [
+    "http"
+  ]
 }
