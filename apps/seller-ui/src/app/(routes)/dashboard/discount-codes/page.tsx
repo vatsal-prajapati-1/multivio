@@ -5,11 +5,17 @@ import Link from 'next/link';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axiosInstance from 'apps/seller-ui/src/utils/axiosInstance';
 import toast from 'react-hot-toast';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import Input from 'packages/components/input';
+import { AxiosError } from 'axios';
+import DeleteDiscountCodeModel from 'apps/seller-ui/src/shared/components/models/delete.discount-codes.tsx';
 
 const page = () => {
   const [showModel, setShowModel] = useState(false);
+
+  const [showDeleteModel, setShowDeleteModel] = useState(false);
+
+  const [selectedDiscount, setSelectedDiscount] = useState<any>();
 
   const queryClient = useQueryClient();
 
@@ -32,7 +38,7 @@ const page = () => {
       public_name: '',
       discountType: 'percentage',
       discountValue: '',
-      discountCodes: '',
+      discountCode: '',
     },
   });
 
@@ -48,14 +54,31 @@ const page = () => {
     },
   });
 
+  const deleteDiscountCodeMutation = useMutation({
+    mutationFn: async (discountId) => {
+      await axiosInstance.delete(
+        `/product/api/delete-discount-code/${discountId}`
+      );
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['shops-discounts'] });
+      setShowDeleteModel(false);
+    },
+  });
+
   const handleDeleteClick = async (discount: any) => {
-    console.log('discount', discount);
+    setSelectedDiscount(discount);
+    setShowDeleteModel(true);
   };
 
   const onSubmit = (data: any) => {
     if (discountCodes.length >= 8) {
       toast.error('You can only create up to 8 discount codes.');
+      return;
     }
+
+    createDiscountCodeMutation.mutate(data);
   };
 
   return (
@@ -74,7 +97,7 @@ const page = () => {
 
       <div className="flex items-center text-white">
         <Link href={'/dashboard'} className="text-[#80Deea] cursor-pointer">
-          Dashboaard
+          Dashboard
         </Link>
 
         <ChevronRight size={20} className="opacity-[.8]" />
@@ -168,9 +191,89 @@ const page = () => {
                   {errors.public_name.message as string}
                 </p>
               )}
+
+              {/* Discount Type */}
+
+              <div className="mt-2">
+                <label className="block font-semibold text-gray-300 mb-1">
+                  Discount Type
+                </label>
+
+                <Controller
+                  control={control}
+                  name="discountType"
+                  render={({ field }) => (
+                    <select
+                      {...field}
+                      className="w-full border outline-none border-gray-700 bg-transparent p-2 rounded-md text-white"
+                    >
+                      <option value="percentage" className="text-black">
+                        Percentage (%)
+                      </option>
+                      <option value="flat" className="text-black">
+                        Flat amount ($)
+                      </option>
+                    </select>
+                  )}
+                />
+              </div>
+
+              {/* Discount Value */}
+              <div className="mt-2">
+                <Input
+                  label="Discount Value"
+                  type="number"
+                  min={1}
+                  {...register('discountValue', {
+                    required: 'Value is required',
+                  })}
+                />
+              </div>
+
+              {/* Discount Code */}
+
+              <div className="mt-2">
+                <Input
+                  label="Discount Code"
+                  {...register('discountCode', {
+                    required: 'Discount Code is required',
+                  })}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={createDiscountCodeMutation.isPending}
+                className="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold flex items-center justify-center gap-2"
+              >
+                <Plus size={18} />
+                {createDiscountCodeMutation?.isPending
+                  ? 'Creating ... '
+                  : 'Create'}
+              </button>
+
+              {createDiscountCodeMutation.isError && (
+                <p className="text-red-500 text-sm mt-2">
+                  {(
+                    createDiscountCodeMutation.error as AxiosError<{
+                      message: string;
+                    }>
+                  )?.response?.data?.message || 'Something went wrong'}
+                </p>
+              )}
             </form>
           </div>
         </div>
+      )}
+
+      {showDeleteModel && selectedDiscount && (
+        <DeleteDiscountCodeModel
+          discount={selectedDiscount}
+          onClose={() => setShowDeleteModel(false)}
+          onConfirm={() =>
+            deleteDiscountCodeMutation.mutate(selectedDiscount?.id)
+          }
+        />
       )}
     </div>
   );
