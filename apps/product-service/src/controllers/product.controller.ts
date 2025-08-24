@@ -1,4 +1,5 @@
 import { NotFoundError, ValidationError } from '@packages/error-handler';
+import { imagekit } from '@packages/libs/imageKit';
 import prisma from '@packages/libs/prisma';
 import { NextFunction, Request, Response } from 'express';
 
@@ -37,9 +38,7 @@ export const createDiscountCodes = async (
 
     // Validate required fields
     if (!public_name || !discountType || !discountValue || !discountCode) {
-      return next(
-        new ValidationError('All fields are required')
-      );
+      return next(new ValidationError('All fields are required'));
     }
 
     const isDiscountCodeExist = await prisma.discount_codes.findUnique({
@@ -131,6 +130,52 @@ export const deleteDiscountCodes = async (
     return res
       .status(200)
       .json({ message: 'Discount code successfully deleted' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Upload product image
+
+export const uploadProductImage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { fileName } = req.body;
+
+    const response = await imagekit.upload({
+      file: fileName,
+      fileName: `product-${Date.now()}.jpg`,
+      folder: '/products',
+    });
+
+    res.status(201).json({
+      file_url: response.url,
+      fileId: response.fileId,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Delete product image
+
+export const deleteProductImage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { fileId } = req.body;
+
+    const response = await imagekit.deleteFile(fileId);
+
+    res.status(201).json({
+      success: true,
+      response,
+    });
   } catch (error) {
     next(error);
   }
