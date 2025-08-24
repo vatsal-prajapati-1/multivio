@@ -54,4 +54,5 @@ test-output
 out
 
 # swagger output json file
-/apps/auth-service/src/swagger-output.json
+# /apps/auth-service/src/swagger-output.json
+# /apps/product-service/src/swagger-output.json
