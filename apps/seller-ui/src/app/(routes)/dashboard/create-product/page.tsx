@@ -5,6 +5,7 @@ import { enhancements } from 'apps/seller-ui/src/utils/AI.enchancements';
 import axiosInstance from 'apps/seller-ui/src/utils/axiosInstance';
 import { ChevronRight, Wand, X } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import ColorSelector from 'packages/components/color-selector';
 import CustomProperties from 'packages/components/custom-properties';
 import CustomSpecifications from 'packages/components/custom-specifications';
@@ -13,6 +14,7 @@ import RichTextEditor from 'packages/components/rich-text-editor';
 import SizeSelector from 'packages/components/size-selector';
 import React, { useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 interface UploadedImage {
   fileId: string;
@@ -59,6 +61,8 @@ const Page = () => {
     retry: 2,
   });
 
+  const router = useRouter();
+
   const { data: discountCodes = [], isLoading: discountLoading } = useQuery({
     queryKey: ['shop-discounts'],
     queryFn: async () => {
@@ -79,8 +83,16 @@ const Page = () => {
     return selectedCategory ? subCategoriesData[selectedCategory] || [] : [];
   }, [selectedCategory, subCategoriesData]);
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    try {
+      setLoading(true)
+      await axiosInstance.post("/product/api/create-product", data)
+      router.push("/dashboard/all-products")
+    } catch (error: any) {
+      toast.error(error?.data?.message)
+    }finally {
+      setLoading(false)
+    }
   };
 
   const convertFileToBase64 = (file: File) => {
@@ -254,7 +266,7 @@ const Page = () => {
                   cols={10}
                   label="Short Description * (Max 150 words)"
                   placeholder="Enter product description for quick view"
-                  {...register('description', {
+                  {...register('short_description', {
                     required: 'Description is required',
                     validate: (value) => {
                       const wordCount = value.trim().split(/\s+/).length;
@@ -265,9 +277,9 @@ const Page = () => {
                     },
                   })}
                 />
-                {errors.description && (
+                {errors.short_description && (
                   <p className="text-red-500 text-xs mt-1">
-                    {errors.description.message as string}
+                    {errors.short_description.message as string}
                   </p>
                 )}
               </div>
@@ -644,11 +656,11 @@ const Page = () => {
               />
             </div>
 
-            <div className="w-full h-[250px] rounded-md overflow-hidden border border-gray-600">
+            <div className="w-full h-[250px] rounded-md overflow-hidden border border-gray-600 relative">
               <Image src={selectedImage} alt="product-image" layout="fill" />
             </div>
             {selectedImage && (
-              <div className="mt-2 space-y-2">
+              <div className="mt-4 space-y-2">
                 <h3 className="text-white text-sm font-semibold">
                   AI Enhancements
                 </h3>
