@@ -3,7 +3,7 @@ import cron from 'node-cron';
 
 cron.schedule('0 * * * *', async () => {
   try {
-    const now = Date();
+    const now = new Date();
     // Delete products where `deleteAt` is older than 24 hours
     await prisma.products.deleteMany({
       where: {

@@ -85,13 +85,13 @@ const Page = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      setLoading(true)
-      await axiosInstance.post("/product/api/create-product", data)
-      router.push("/dashboard/all-products")
+      setLoading(true);
+      await axiosInstance.post('/product/api/create-product', data);
+      router.push('/dashboard/all-products');
     } catch (error: any) {
-      toast.error(error?.data?.message)
-    }finally {
-      setLoading(false)
+      toast.error(error?.data?.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -176,7 +176,33 @@ const Page = () => {
     setActiveEffect(transformation);
 
     try {
-      const transformedUrl = `${selectedImage}?tr=${transformation}`;
+      // const transformedUrl = `${selectedImage}?tr=${transformation}`;
+      // const transformedUrl = `${selectedImage}?tr=w-800`;
+      // console.log(transformedUrl);
+
+      let transformedUrl = selectedImage;
+
+      switch (transformation) {
+        case 'remove-bg':
+          // Remove background - requires premium account
+          transformedUrl = `${selectedImage}?tr=bg-ffffff`;
+          break;
+        case 'enhance':
+          // Enhance image quality
+          transformedUrl = `${selectedImage}?tr=q-90`;
+          break;
+        case 'resize':
+          // Resize image
+          transformedUrl = `${selectedImage}?tr=w-800,h-600`;
+          break;
+        case 'blur':
+          // Apply blur effect
+          transformedUrl = `${selectedImage}?tr=bl-10`;
+          break;
+        default:
+          transformedUrl = selectedImage;
+      }
+
       setSelectedImage(transformedUrl);
     } catch (error) {
       console.log(error);
