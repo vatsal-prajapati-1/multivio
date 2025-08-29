@@ -34,12 +34,13 @@ const DeleteConfirmationModel = ({
         <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={onClose}
-            className="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-md text-white transition" // incomplete class
+            className="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-md text-white transition"
           >
             Cancel
           </button>
 
           <button
+            onClick={!product?.isDeleted ? onConfirm : onRestore}
             className={`${
               product?.isDeleted
                 ? 'bg-green-600 hover:bg-green-700'

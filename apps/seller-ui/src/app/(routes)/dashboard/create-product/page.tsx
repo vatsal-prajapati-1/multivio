@@ -41,7 +41,7 @@ const Page = () => {
 
   const [processing, setProcessing] = useState(false);
 
-  const [isChanged, setIsChanged] = useState(false);
+  const [isChanged, setIsChanged] = useState(true);
 
   const [images, setImages] = useState<(UploadedImage | null)[]>([null]);
 
@@ -682,7 +682,7 @@ const Page = () => {
               />
             </div>
 
-            <div className="w-full h-[250px] rounded-md overflow-hidden border border-gray-600 relative">
+            <div className="w-full h-[250px] rounded-md overflow-hidden border border-gray-600">
               <Image src={selectedImage} alt="product-image" layout="fill" />
             </div>
             {selectedImage && (
