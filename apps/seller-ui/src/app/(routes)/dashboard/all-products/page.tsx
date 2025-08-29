@@ -80,8 +80,8 @@ const ProductList = () => {
         cell: ({ row }: any) => {
           return (
             <Image
-              src={row.original.image[0]?.url}
-              alt={row.original.image[0]?.url}
+              src={row.original.images[0]?.url}
+              alt={row.original.images[0]?.url}
               width={200}
               height={200}
               className="w-12 h-12 rounded-md object-cover"
@@ -205,7 +205,7 @@ const ProductList = () => {
 
         <Link
           href="/dashboard/create-product"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex "
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition"
         >
           <Plus size={18} /> Add Product
         </Link>
@@ -266,7 +266,7 @@ const ProductList = () => {
                   className="border-b border-gray-800 hover:bg-gray-900 transition"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <td key="{cell.id}" className="p-3">
+                    <td key={cell.id} className="p-3">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

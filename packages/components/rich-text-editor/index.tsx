@@ -38,6 +38,7 @@ const RichTextEditor = ({
         value={editorValue}
         onChange={(content) => {
           setEditorValue(content);
+          onChange(content);
         }}
         modules={{
           toolbar: [
@@ -64,7 +65,6 @@ const RichTextEditor = ({
 
       <style>
         {`
-
         .ql-toolbar {
         background: transparent; /* Dark toolbar */
         border-color: #444;
@@ -104,9 +104,6 @@ const RichTextEditor = ({
         .ql-stroke {
         storke: white !important;
         }
-
-
-
         `}
       </style>
     </div>
