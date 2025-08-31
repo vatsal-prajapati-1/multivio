@@ -1,7 +1,7 @@
 import React from 'react';
 
-const cartIcon = () => {
+const CartIcon = () => {
   return <div>cart-icon</div>;
 };
 
-export default cartIcon;
+export default CartIcon;
