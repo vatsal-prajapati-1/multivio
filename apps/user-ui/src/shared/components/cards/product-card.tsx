@@ -4,10 +4,24 @@ import React, { useEffect, useState } from 'react';
 import Ratings from '../ratings';
 import { Eye, Heart, ShoppingBag } from 'lucide-react';
 import ProductDetailsCard from './product-details.card';
+import { useStore } from 'apps/user-ui/src/store';
+import useUser from 'apps/user-ui/src/hooks/useUser';
+import useLocationTracking from 'apps/user-ui/src/hooks/useLocationTracking';
+import useDeviceTracking from 'apps/user-ui/src/hooks/useDeviceTracking';
 
 const ProductCard = ({ product, isEvent }: { product: any; isEvent?: any }) => {
   const [timeLeft, setTimeLeft] = useState('');
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+  const { user } = useUser();
+  const location = useLocationTracking();
+  const deviceInfo = useDeviceTracking();
+  const addToCart = useStore((state: any) => state.addToCart);
+  const addToWishlist = useStore((state: any) => state.addToWishlist);
+  const removeFromWishlist = useStore((state: any) => state.removeFromWishlist);
+  const wishlist = useStore((state: any) => state.wishlist);
+  const isWishlisted = wishlist.some((item: any) => item.id === product.id);
+  const cart = useStore((state: any) => state.cart);
+  const isInCart = cart.some((item: any) => item.id === product.id);
 
   useEffect(() => {
     if (isEvent && product?.ending_date) {
@@ -30,22 +44,6 @@ const ProductCard = ({ product, isEvent }: { product: any; isEvent?: any }) => {
 
         setTimeLeft(`${days}d ${hours}h ${minutes}m left with this price`);
       }, 60000);
-
-      // const endTime = new Date(product.ending_date).getTime();
-      // const now = Date.now();
-      // const diff = endTime - now;
-
-      // if (diff <= 0) {
-      //   setTimeLeft('Expired');
-      // } else {
-      //   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-      //   const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-
-      //   const minutes = Math.floor((diff / (1000 * 60)) % 60);
-
-      //   setTimeLeft(`${days}d ${hours}h ${minutes}m left with this price`);
-      // }
 
       return () => clearInterval(interval);
     }
@@ -120,8 +118,18 @@ const ProductCard = ({ product, isEvent }: { product: any; isEvent?: any }) => {
           <Heart
             className="cursor-pointer hover:scale-110 transition"
             size={22}
-            fill={'red'}
-            stroke="red"
+            fill={isWishlisted ? 'red' : 'transparent'}
+            stroke={isWishlisted ? 'red' : '#4b5563'}
+            onClick={() =>
+              isWishlisted
+                ? removeFromWishlist(product.id, user, location, deviceInfo)
+                : addToWishlist(
+                    { ...product, quality: 1 },
+                    user,
+                    location,
+                    deviceInfo
+                  )
+            }
           />
         </div>
         <div className="bg-white rounded-full p-[6px] shadow-md">
@@ -135,18 +143,15 @@ const ProductCard = ({ product, isEvent }: { product: any; isEvent?: any }) => {
           <ShoppingBag
             className="cursor-pointer text-[#4b5563] hover:scale-110 transition"
             size={22}
+            onClick={() =>
+              !isInCart &&
+              addToCart({ ...product, quantity: 1 }, user, location, deviceInfo)
+            }
           />
         </div>
       </div>
 
-
-{
-  open && (
-    <ProductDetailsCard data={product} setOpen={setOpen} />
-  )
-}
-
-
+      {open && <ProductDetailsCard data={product} setOpen={setOpen} />}
     </div>
   );
 };
