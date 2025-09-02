@@ -124,7 +124,7 @@ const ProductCard = ({ product, isEvent }: { product: any; isEvent?: any }) => {
               isWishlisted
                 ? removeFromWishlist(product.id, user, location, deviceInfo)
                 : addToWishlist(
-                    { ...product, quality: 1 },
+                    { ...product, quantity: 1 },
                     user,
                     location,
                     deviceInfo

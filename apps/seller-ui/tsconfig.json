@@ -36,7 +36,7 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "../../packages/utils/logs/send-logs.ts"  ],
   "exclude": [
     "out-tsc",
     "dist",
