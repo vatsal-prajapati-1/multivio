@@ -17,28 +17,28 @@ type Store = {
   addToCart: (
     product: Product,
     user: any,
-    location: string,
-    deviceInfo: string
+    location: any,
+    deviceInfo: any
   ) => void;
   removeFromCart: (
     id: string,
     user: any,
-    location: string,
-    deviceInfo: string
+    location: any,
+    deviceInfo: any
   ) => void;
 
   addToWishlist: (
     product: Product,
     user: any,
-    location: string,
-    deviceInfo: string
+    location: any,
+    deviceInfo: any
   ) => void;
 
   removeFromWishlist: (
     id: string,
     user: any,
-    location: string,
-    deviceInfo: string
+    location: any,
+    deviceInfo: any
   ) => void;
 };
 
@@ -64,6 +64,19 @@ export const useStore = create<Store>()(
           }
           return { cart: [...state.cart, { ...product, quantity: 1 }] };
         });
+
+        // send kafka event
+        if (user?.id && location && deviceInfo) {
+          // sendKafkaEvent({
+          //   userId: user?.id,
+          //   productId: product?.id,
+          //   shopId: product?.shopId,
+          //   action: 'add_to_cart',
+          //   country: location?.country || 'Unknown',
+          //   city: location?.city || "Unknown",
+          //   device: deviceInfo || "Unknown Device",
+          // });
+        }
       },
 
       // Remove from Cart
@@ -73,6 +86,19 @@ export const useStore = create<Store>()(
         set((state) => ({
           cart: state.cart?.filter((item) => item.id !== id),
         }));
+
+          // send kafka event
+        if (user?.id && location && deviceInfo && removeProduct) {
+          // sendKafkaEvent({
+          //   userId: user?.id,
+          //   productId: removeProduct?.id,
+          //   shopId: removeProduct?.shopId,
+          //   action: 'remove_from_cart',
+          //   country: location?.country || 'Unknown',
+          //   city: location?.city || "Unknown",
+          //   device: deviceInfo || "Unknown Device",
+          // });
+        }
       },
 
       //   Add to Wishlist
@@ -83,16 +109,42 @@ export const useStore = create<Store>()(
             return state;
           return { wishlist: [...state.wishlist, product] };
         });
+          // send kafka event
+        if (user?.id && location && deviceInfo) {
+          // sendKafkaEvent({
+          //   userId: user?.id,
+          //   productId: product?.id,
+          //   shopId: product?.shopId,
+          //   action: 'add_to_wishlist',
+          //   country: location?.country || 'Unknown',
+          //   city: location?.city || "Unknown",
+          //   device: deviceInfo || "Unknown Device",
+          // });
+        }
       },
 
       //  Remove from Wishlist
       removeFromWishlist: (id, user, location, deviceInfo) => {
         // Find the product BEFORE calling `set`
-        const removedProduct = get().wishlist.find((item) => item.id === id);
+        const removeProduct = get().wishlist.find((item) => item.id === id);
 
         set((state) => ({
           wishlist: state.wishlist.filter((item) => item.id !== id),
         }));
+
+         // send kafka event
+        if (user?.id && location && deviceInfo && removeProduct) {
+          // sendKafkaEvent({
+          //   userId: user?.id,
+          //   productId: removeProduct?.id,
+          //   shopId: removeProduct?.shopId,
+          //   action: 'remove_from_cart',
+          //   country: location?.country || 'Unknown',
+          //   city: location?.city || "Unknown",
+          //   device: deviceInfo || "Unknown Device",
+          // });
+        }
+        
       },
     }),
     { name: 'store-storage' }
